@@ -11,3 +11,6 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 .idea/
+*.tmp
+routers/commentsRouter___________________Users_kieren_go_src_redis-agent_controllers.go
+vendor/
