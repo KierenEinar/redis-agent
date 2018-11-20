@@ -25,6 +25,11 @@ func init() {
 				&controllers.UserController{},
 			),
 		),
+		beego.NSNamespace("/redis",
+			beego.NSInclude(
+				&controllers.RedisController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

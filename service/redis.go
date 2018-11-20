@@ -1,24 +1,22 @@
 package service
 
 import (
-	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/go-redis/redis"
 	"github.com/labstack/gommon/log"
 	"os"
-	"strings"
+	"time"
 )
 
-func init () {
+var redisClient *redis.ClusterClient
 
-	var redisClusterNodes string = beego.AppConfig.String("redisClusterNodes")
+type Cache struct{
+	Addrs []string
+}
 
-	addrs := strings.Split(redisClusterNodes, ",")
-
-	fmt.Println("redis cluster client init, addrs", addrs)
+func (c *Cache) Connect () {
 
 	rediClusterClient := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: addrs,
+		Addrs: c.Addrs,
 		DialTimeout: 500000000,
 	})
 
@@ -29,4 +27,16 @@ func init () {
 	} else {
 		log.Info("connect redis cluster success")
 	}
+
+	redisClient = rediClusterClient
+
+}
+
+func (*Cache) Set(key string, value interface{}, seconds int64) {
+	redisClient.Set(key, value, time.Duration(seconds) * time.Second)
+}
+
+func (*Cache) Get(key string) (string){
+	 result := redisClient.Get(key)
+	 return result.Val()
 }

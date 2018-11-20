@@ -1,9 +1,11 @@
 package main
 
 import (
-	_ "redis-agent/routers"
-	_ "redis-agent/service"
+	"fmt"
 	"github.com/astaxie/beego"
+	_ "redis-agent/routers"
+	"redis-agent/service"
+	"strings"
 )
 
 func main() {
@@ -11,6 +13,10 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
-
+	var redisClusterNodes string = beego.AppConfig.String("redisClusterNodes")
+	addrs := strings.Split(redisClusterNodes, ",")
+	fmt.Println("redis cluster client init, addrs", addrs)
+	var cache = service.Cache{addrs}
+	cache.Connect()
 	beego.Run()
 }

@@ -12,5 +12,5 @@
 *.out
 .idea/
 *.tmp
-routers/commentsRouter___________________Users_kieren_go_src_redis-agent_controllers.go
+routers/commentsRouter*.go
 vendor/
