@@ -1,5 +1,5 @@
-hash: 13b97da87d4ebd10d17a74f38a73aadf9a8dc245f0d5b7d334530b448185ed39
-updated: 2018-11-20T10:51:00.560726+08:00
+hash: e64e9749770e054d5014167af4330d60cbe93f3d7cd5cc43484c3ab8b6761b03
+updated: 2018-11-20T17:55:20.168325+08:00
 imports:
 - name: github.com/astaxie/beego
   version: 053a075344c118a5cc41981b29ef612bb53d20ca
@@ -35,6 +35,8 @@ imports:
   version: cdfbe9377474227bb42120c1e22fd4433e7f69bf
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
+- name: github.com/vladimirvivien/gowfs
+  version: 8471987b0ddb28183420039913294a0431384a03
 - name: golang.org/x/crypto
   version: 3d3f9f413869b949e48070b5bc593aa22cc2b8f2
   subpackages:

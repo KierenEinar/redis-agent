@@ -18,5 +18,12 @@ func main() {
 	fmt.Println("redis cluster client init, addrs", addrs)
 	var cache = service.Cache{addrs}
 	cache.Connect()
+
+	var hdfsnamenode string = beego.AppConfig.String("hdfsnamenode")
+	var hdfsuser string = beego.AppConfig.String("hdfsuser")
+
+	webHdfsClient := &service.WebHdfsClient{hdfsnamenode, hdfsuser}
+	webHdfsClient.Connect()
+
 	beego.Run()
 }

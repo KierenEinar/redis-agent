@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/go-redis/redis"
 	"github.com/labstack/gommon/log"
-	"os"
 	"time"
 )
 
@@ -23,7 +22,7 @@ func (c *Cache) Connect () {
 	err := rediClusterClient.Ping().Err()
 	if err != nil {
 		log.Error("connect redis cluster error", err)
-		os.Exit(-1)
+		//os.Exit(-1)
 	} else {
 		log.Info("connect redis cluster success")
 	}
