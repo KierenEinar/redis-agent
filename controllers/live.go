@@ -46,15 +46,13 @@ func (live *LiveController) HandleLive (){
 
 	tsRaw := <-tsFile
 	m3u8Raw := <-m3u8File
-
-	log.Infof("tsRaw -> %s, m3u8Raw -> %s", tsRaw, m3u8Raw)
-
 	redis := service.Cache{}
 	redis.Set(m3u8Key, m3u8Raw, 60)
 	redis.Set(tsKey, tsRaw,60)
 
-	live.Data["json"] = map[string]interface{} {"code":0, "data":"write redis success"}
-	live.ServeJSON()
+	log.Info("写入 redis 成功")
+	live.Ctx.ResponseWriter.WriteHeader(200)
+
 }
 
 
