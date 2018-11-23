@@ -24,7 +24,7 @@ func (live *LiveController) HandleLive (){
 	log.Infof("tsPath -> %s, m3u8Path -> %s, bucket -> %s", tsPath, m3u8Path, bucket)
 
 
-	if commons.IsBlank(&tsPath) || commons.IsNotBlank(&m3u8Path) || commons.IsNotBlank(&bucket) {
+	if commons.IsBlank(&tsPath) || commons.IsBlank(&m3u8Path) || commons.IsBlank(&bucket) {
 		live.Data["json"] = map[string]interface{} {"code":0, "data":"success"}
 		live.ServeJSON()
 		return
