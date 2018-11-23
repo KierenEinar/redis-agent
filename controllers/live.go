@@ -8,6 +8,7 @@ import (
 	"path"
 	"redis-agent/commons"
 	"redis-agent/service"
+	"strings"
 )
 
 //tsPath, m3u8Path, bucket
@@ -23,12 +24,23 @@ func (live *LiveController) HandleLive (){
 	bucket:= live.GetString("bucket")
 	log.Infof("tsPath -> %s, m3u8Path -> %s, bucket -> %s", tsPath, m3u8Path, bucket)
 
-
 	if commons.IsBlank(&tsPath) || commons.IsBlank(&m3u8Path) || commons.IsBlank(&bucket) {
 		live.Data["json"] = map[string]interface{} {"code":0, "data":"success"}
 		live.ServeJSON()
 		return
 	}
+
+	if strings.Index(m3u8Path,"/home/nginx/hls") != -1{
+		Live(tsPath, m3u8Path, bucket)
+	} else {
+		vod (tsPath, m3u8Path, bucket)
+	}
+
+	live.Ctx.ResponseWriter.WriteHeader(200)
+
+}
+
+func Live (tsPath string, m3u8Path string, bucket string) {
 
 	tsFile := make(chan string, 1)
 	m3u8File := make (chan string, 1)
@@ -51,7 +63,9 @@ func (live *LiveController) HandleLive (){
 	redis.Set(tsKey, tsRaw,60)
 
 	log.Info("写入 redis 成功")
-	live.Ctx.ResponseWriter.WriteHeader(200)
+}
+
+func vod (tsPath string, m3u8Path string, bucket string) {
 
 }
 
