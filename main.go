@@ -6,6 +6,7 @@ import (
 	_ "redis-agent/routers"
 	"redis-agent/service"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -14,9 +15,14 @@ func main() {
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
 	var redisClusterNodes string = beego.AppConfig.String("redisClusterNodes")
+	redisPoolSize , _ := beego.AppConfig.Int("redisPoolSize")
+	redisMinIdleConns, _ := beego.AppConfig.Int("redisMinIdleConns")
+	redisIdleTimeout,_ := time.ParseDuration(beego.AppConfig.String("redisIdleTimeout"))
+	redisDialTimeout,_:=time.ParseDuration(beego.AppConfig.String("redisDialTimeout"))
+
 	addrs := strings.Split(redisClusterNodes, ",")
 	fmt.Println("redis cluster client init, addrs", addrs)
-	var cache = service.Cache{addrs}
+	var cache = service.Cache{addrs,redisPoolSize, redisMinIdleConns, redisIdleTimeout, redisDialTimeout}
 	cache.Connect()
 
 	var hdfsnamenode string = beego.AppConfig.String("hdfsnamenode")

@@ -30,6 +30,11 @@ func init() {
 				&controllers.RedisController{},
 			),
 		),
+		beego.NSNamespace("/live",
+			beego.NSInclude(
+				&controllers.LiveController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
