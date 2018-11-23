@@ -12,11 +12,13 @@ type LiveController struct {
 }
 
 // @router / [get]
-func (live *LiveController) HandleLive () {
+func (live *LiveController) HandleLive (){
 	tsPath := live.GetString("tsPath")
 	m3u8Path:= live.GetString("m3u8Path")
 	bucket:= live.GetString("bucket")
 	log.Infof("tsPath -> %s, m3u8Path -> %s, bucket -> %s", tsPath, m3u8Path, bucket)
+	live.Data["json"] = map[string]interface{} {"code":0, "data":"success"}
+	live.ServeJSON()
 }
 
 

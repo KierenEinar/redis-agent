@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/labstack/gommon/log"
+	"github.com/labstack/gommon/random"
 	_ "redis-agent/routers"
 	"redis-agent/service"
 	"strings"
@@ -31,5 +33,7 @@ func main() {
 	webHdfsClient := &service.WebHdfsClient{hdfsnamenode, hdfsuser}
 	webHdfsClient.Connect()
 
+	log.Info("当前dev版本", random.New().String(12))
 	beego.Run()
+
 }
