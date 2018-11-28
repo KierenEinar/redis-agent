@@ -66,7 +66,7 @@ func Live (tsPath string, m3u8Path string, bucket string) {
 }
 
 func vod (tsPath string, m3u8Path string, bucket string) {
-
+	log.Infof("vod,  tsKey -> %s, m3u8Key -> %s, bucket -> %s", tsPath, m3u8Path, bucket)
 }
 
 
