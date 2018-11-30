@@ -35,6 +35,12 @@ func init() {
 				&controllers.LiveController{},
 			),
 		),
+		beego.NSNamespace("/record",
+			beego.NSInclude(
+				&controllers.RecordController{},
+			),
+		),
+
 	)
 	beego.AddNamespace(ns)
 }
