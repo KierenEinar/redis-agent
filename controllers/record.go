@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/labstack/gommon/log"
+	"path"
 	"redis-agent/commons"
 	"redis-agent/service"
 	"strings"
@@ -38,7 +39,7 @@ func (record * RecordController) OpenRecord () {
 	cache := service.Cache{}
 
 	log.Info("vodKey -> ", vodKey, "," , "vodName -> ", vodName)
-	cache.Set(vodKey, vodName, 120)
+	cache.Set(vodKey, vodName, -1)
 	log.Info("vod 写入redis 成功" )
 	record.Ctx.ResponseWriter.WriteHeader(200)
 }
@@ -57,4 +58,10 @@ func vod (tsPath string, m3u8Path string, bucket string) {
 	temp :=m3u8Path + ".vod"
 	go service.WriteFile (&temp, f, write, false)
 	<-write
+	hdfsprefix := beego.AppConfig.String("hdfsprefix")
+	cache := service.Cache{}
+	vodName := cache.Get(bucket)
+	hdfs:= service.WebHdfsClient{}
+	remoteFile := path.Join(hdfsprefix, vodName, "index.m3u8")
+	hdfs.UploadFile(temp, remoteFile)
 }
