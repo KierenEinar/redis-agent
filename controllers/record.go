@@ -33,20 +33,15 @@ func (record *RecordController) HandleRecord (){
 
 // @router / [post]
 func (record * RecordController) OpenRecord () {
-
 	var obj models.Record
 	json.Unmarshal(record.Ctx.Input.RequestBody, &obj)
-
 	log.Info("open record, name -> ", obj.Name)
-
 	vodName := obj.Name
 	vodKey := time.Now().Nanosecond()
-
 	cache := service.Cache{}
-	cache.Set(vodName, vodKey, -1)
-
+	log.Infof("vodName -> %s,	vodKey -> %s ", vodName, vodKey)
+	cache.Set(vodName, vodKey, 60)
 	record.Ctx.ResponseWriter.WriteHeader(200)
-
 }
 
 
