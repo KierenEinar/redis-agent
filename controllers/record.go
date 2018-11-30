@@ -36,8 +36,9 @@ func (record * RecordController) OpenRecord () {
 	vodName := time.Now().Nanosecond()
 	cache := service.Cache{}
 
-	log.Infof("vodName -> %s,	vodKey -> %d ", vodName, vodKey)
+	log.Info("vodKey -> ", vodKey, "," , "vodName -> ", vodName)
 	cache.Set(vodKey, vodName, 60)
+	log.Info("vod 写入redis 成功" )
 	record.Ctx.ResponseWriter.WriteHeader(200)
 }
 
