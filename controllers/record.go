@@ -34,6 +34,9 @@ func (record *RecordController) HandleRecord (){
 // @router / [post]
 func (record * RecordController) OpenRecord () {
 	var obj models.Record
+
+	log.Info("request body -> ", string(record.Ctx.Input.RequestBody))
+
 	json.Unmarshal(record.Ctx.Input.RequestBody, &obj)
 	log.Info("open record, name -> ", obj.Name)
 	vodName := obj.Name
