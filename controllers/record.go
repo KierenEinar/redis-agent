@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
 	"github.com/astaxie/beego"
 	"github.com/labstack/gommon/log"
 	"redis-agent/commons"
-	"redis-agent/models"
 	"redis-agent/service"
 	"time"
 )
@@ -33,17 +31,13 @@ func (record *RecordController) HandleRecord (){
 
 // @router / [post]
 func (record * RecordController) OpenRecord () {
-	var obj models.Record
-
-	log.Info("request body -> ", string(record.Ctx.Input.RequestBody))
-
-	json.Unmarshal(record.Ctx.Input.RequestBody, &obj)
-	log.Info("open record, name -> ", obj.Name)
-	vodName := obj.Name
-	vodKey := time.Now().Nanosecond()
+	log.Info("request body -> ", record.GetString("name"))
+	vodKey := record.GetString("name")
+	vodName := time.Now().Nanosecond()
 	cache := service.Cache{}
-	log.Infof("vodName -> %s,	vodKey -> %s ", vodName, vodKey)
-	cache.Set(vodName, vodKey, 60)
+
+	log.Infof("vodName -> %s,	vodKey -> %d ", vodName, vodKey)
+	cache.Set(vodKey, vodName, 60)
 	record.Ctx.ResponseWriter.WriteHeader(200)
 }
 
