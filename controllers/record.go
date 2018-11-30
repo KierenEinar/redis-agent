@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"redis-agent/commons"
 	"redis-agent/service"
+	"strings"
 	"time"
 )
 
@@ -37,7 +38,7 @@ func (record * RecordController) OpenRecord () {
 	cache := service.Cache{}
 
 	log.Info("vodKey -> ", vodKey, "," , "vodName -> ", vodName)
-	cache.Set(vodKey, vodName, 60)
+	cache.Set(vodKey, vodName, 120)
 	log.Info("vod 写入redis 成功" )
 	record.Ctx.ResponseWriter.WriteHeader(200)
 }
@@ -45,4 +46,15 @@ func (record * RecordController) OpenRecord () {
 
 func vod (tsPath string, m3u8Path string, bucket string) {
 	log.Infof("vod,  tsKey -> %s, m3u8Key -> %s, bucket -> %s", tsPath, m3u8Path, bucket)
+	data := make (chan string)
+	write := make(chan string)
+	go service.ReadFile(&m3u8Path, data, false)
+	replace := "#EXT-X-DISCONTINUITY"
+	end := "\r\n#EXT-X-ENDLIST"
+	f := <- data
+	f = strings.Replace(f, replace,"", -1)
+	f = f + end
+	temp :=m3u8Path + ".vod"
+	go service.WriteFile (&temp, f, write, false)
+	<-write
 }
