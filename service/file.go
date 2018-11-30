@@ -26,6 +26,6 @@ func WriteFile (f *string, content string ,data chan string, base64Enc bool) {
 		content = base64.StdEncoding.EncodeToString([]byte(content))
 	}
 	ioutil.WriteFile(*f, []byte(content), os.ModeDevice)
-	<-data
+	data <- ""
 }
 
