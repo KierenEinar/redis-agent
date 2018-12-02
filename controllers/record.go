@@ -64,10 +64,11 @@ func vod (tsPath string, m3u8Path string, bucket string) {
 	vodName := cache.Get(bucket)
 	log.Info("vodName", vodName)
 
-	remoteFile := path.Join(hdfsprefix, vodName, "index.m3u8")
-	log.Info("remoteFile", remoteFile)
+	hdfsPath := path.Join(hdfsprefix, vodName)
+	log.Info("hdfsPath", hdfsPath)
 	hdfs:= service.WebHdfsClient{}
-	log.Info("写入hdfs 路径", remoteFile)
-	hdfs.UploadFile(temp, remoteFile)
+	log.Info("写入hdfs 路径", hdfsPath)
+	hdfs.UploadFile(temp, hdfsPath)
+	hdfs.RnameRemoteFile(path.Join(hdfsPath,temp), path.Join(hdfsPath,path.Base(m3u8Path)))
 	log.Info("写入hdfs 成功")
 }
