@@ -55,20 +55,17 @@ func vod (tsPath string, m3u8Path string, bucket string) {
 	f := <- data
 	f = strings.Replace(f, replace,"", -1)
 	f = f + end
-	temp :=m3u8Path + ".vod"
-	go service.WriteFile (&temp, f, write, false)
+	go service.WriteFile (&m3u8Path, f, write, false)
 	<-write
 	hdfsprefix := beego.AppConfig.String("hdfsprefix")
 	log.Info("hdfsprefix", hdfsprefix)
 	cache := service.Cache{}
 	vodName := cache.Get(bucket)
 	log.Info("vodName", vodName)
-
 	hdfsPath := path.Join(hdfsprefix, vodName)
 	log.Info("hdfsPath", hdfsPath)
 	hdfs:= service.WebHdfsClient{}
 	log.Info("写入hdfs 路径", hdfsPath)
-	hdfs.UploadFile(temp, hdfsPath)
-	hdfs.RnameRemoteFile(path.Join(hdfsPath,path.Base(temp)), path.Join(hdfsPath,path.Base(m3u8Path)))
+	hdfs.UploadFile(m3u8Path, hdfsPath)
 	log.Info("写入hdfs 成功")
 }
