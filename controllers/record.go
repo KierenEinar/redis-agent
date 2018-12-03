@@ -69,6 +69,6 @@ func vod (tsPath string, m3u8Path string, bucket string) {
 	hdfs:= service.WebHdfsClient{}
 	log.Info("写入hdfs 路径", hdfsPath)
 	hdfs.UploadFile(temp, hdfsPath)
-	hdfs.RnameRemoteFile(path.Join(hdfsPath,temp), path.Join(hdfsPath,path.Base(m3u8Path)))
+	hdfs.RnameRemoteFile(path.Join(hdfsPath,path.Base(temp)), path.Join(hdfsPath,path.Base(m3u8Path)))
 	log.Info("写入hdfs 成功")
 }
