@@ -67,5 +67,6 @@ func vod (tsPath string, m3u8Path string, bucket string) {
 	hdfs:= service.WebHdfsClient{}
 	log.Info("写入hdfs 路径", hdfsPath)
 	hdfs.UploadFile(m3u8Path, hdfsPath)
+	hdfs.UploadFile(m3u8Path, hdfsPath)
 	log.Info("写入hdfs 成功")
 }
